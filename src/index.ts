@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import myUserRoutes from "./routes/myUserRoutes";
 import { v2 as cloudinary } from "cloudinary";
 import myRestaurantRoute from "./routes/myRestaurantRoute";
+import restaurantRoute from "./routes/restaurantRoute";
 
 mongoose
     .connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -16,7 +17,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const app = express(); // creates anexpress server assign it to app
+const app = express(); // creates an express server assign it to app
 app.use(express.json({ limit: "16kb" })); //middleware  used to parse incoming request bodies with JSON payloads.
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
@@ -29,6 +30,7 @@ app.get("/health", async (req: Request, res: Response) => {
 
 app.use("/api/my/user", myUserRoutes);
 app.use("/api/my/restaurant", myRestaurantRoute);
+app.use("/api/restaurant", restaurantRoute);
 
 app.get("/", async (req: Request, res: Response) => {
     res.send("Hello World");
