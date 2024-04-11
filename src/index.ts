@@ -6,6 +6,7 @@ import myUserRoutes from "./routes/myUserRoutes";
 import { v2 as cloudinary } from "cloudinary";
 import myRestaurantRoute from "./routes/myRestaurantRoute";
 import restaurantRoute from "./routes/restaurantRoute";
+import orderRoute from "./routes/OrderRoute";
 
 mongoose
     .connect(process.env.MONGODB_CONNECTION_STRING as string)
@@ -18,11 +19,15 @@ cloudinary.config({
 });
 
 const app = express(); // creates an express server assign it to app
-app.use(express.json({ limit: "16kb" })); //middleware  used to parse incoming request bodies with JSON payloads.
+
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 //app.use(cookieParser());
 app.use(cors());
+
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+
+app.use(express.json({ limit: "16kb" })); //middleware  used to parse incoming request bodies with JSON payloads.
 
 app.get("/health", async (req: Request, res: Response) => {
     res.send({ message: "health OK!" });
@@ -31,6 +36,7 @@ app.get("/health", async (req: Request, res: Response) => {
 app.use("/api/my/user", myUserRoutes);
 app.use("/api/my/restaurant", myRestaurantRoute);
 app.use("/api/restaurant", restaurantRoute);
+app.use("/api/order", orderRoute);
 
 app.get("/", async (req: Request, res: Response) => {
     res.send("Hello World");
