@@ -23,7 +23,17 @@ const app = express(); // creates an express server assign it to app
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 //app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000", // for local development
+      "https://hungerhub-frontend.onrender.com", // replace with actual deployed frontend
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true, // if you're using cookies or auth headers
+  })
+);
+
 
 app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
 
