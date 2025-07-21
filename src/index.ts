@@ -26,11 +26,11 @@ app.use(express.static("public"));
 app.use(
   cors({
     origin: [
-      "http://localhost:3000", // for local development
-      "https://hungerhub-frontend.onrender.com", // replace with actual deployed frontend
+      "http://localhost:5173", 
+      "https://hungerhub-frontend.onrender.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true, // if you're using cookies or auth headers
+    credentials: true, 
   })
 );
 
